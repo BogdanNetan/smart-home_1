@@ -7,6 +7,7 @@ import org.fasttrackit.smarthome.domain.Room;
 import org.fasttrackit.smarthome.transfer.SaveRoomRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,5 +50,21 @@ public class RoomService {
         return  roomRepository.findById(id)
                 //lambda expressions
                 .orElseThrow(() -> new ResourceNotFoundException("Room" + id + " not found"));
+    }
+
+    public Room updateRoom( long id, SaveRoomRequest request ) {
+        LOGGER.info("Updating room {}: {}", id, request);
+
+        Room room = getRoom(id);
+
+        BeanUtils.copyProperties(request, room);
+
+        return roomRepository.save(room);
+    }
+
+    public void deleteRoom(long id) {
+        LOGGER.info("Deleting room {}: {}", id);
+
+        roomRepository.deleteById(id);
     }
 }
