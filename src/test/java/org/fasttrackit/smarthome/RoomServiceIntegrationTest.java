@@ -3,7 +3,7 @@ package org.fasttrackit.smarthome;
 import org.fasttrackit.smarthome.domain.Room;
 import org.fasttrackit.smarthome.exception.ResourceNotFoundException;
 import org.fasttrackit.smarthome.service.RoomService;
-import org.fasttrackit.smarthome.transfer.SaveRoomRequest;
+import org.fasttrackit.smarthome.transfer.room.SaveRoomRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -44,6 +44,9 @@ public class RoomServiceIntegrationTest {
         Assertions.assertThrows(ResourceNotFoundException.class,
                 () -> roomService.getRoom(564556464));
     }
+
+
+
 
     @Test
     void UpdateRoom_whenValidRequest_thenReturnUpdatedRoom() {

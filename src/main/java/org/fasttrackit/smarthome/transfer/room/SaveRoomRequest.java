@@ -1,4 +1,4 @@
-package org.fasttrackit.smarthome.transfer;
+package org.fasttrackit.smarthome.transfer.room;
 
 import javax.validation.constraints.NotNull;
 

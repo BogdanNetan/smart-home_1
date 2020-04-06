@@ -4,14 +4,15 @@ package org.fasttrackit.smarthome.service;
 import org.fasttrackit.smarthome.exception.ResourceNotFoundException;
 import org.fasttrackit.smarthome.persistance.RoomRepository;
 import org.fasttrackit.smarthome.domain.Room;
-import org.fasttrackit.smarthome.transfer.SaveRoomRequest;
+import org.fasttrackit.smarthome.transfer.room.GetRoomsRequest;
+import org.fasttrackit.smarthome.transfer.room.SaveRoomRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 
 @Service
@@ -51,6 +52,17 @@ public class RoomService {
                 //lambda expressions
                 .orElseThrow(() -> new ResourceNotFoundException("Room" + id + " not found"));
     }
+
+//    public Page<Room> getRooms(GetRoomsRequest request, Pageable pageable) {
+//        LOGGER.info("Searching rooms : {} ", request);
+//
+//        if (request != null) {
+//            if (request.getPartialName() != null) {
+//                return roomRepository.findByNameContaining(request.getPartialName(), pageable);
+//            } else if (request.getPartialName() != null) {
+//                return roomRepository.findByNameContaining(request.getPartialName(), pageable);
+//            }
+//    }
 
     public Room updateRoom( long id, SaveRoomRequest request ) {
         LOGGER.info("Updating room {}: {}", id, request);
