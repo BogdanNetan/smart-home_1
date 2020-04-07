@@ -10,8 +10,6 @@ import javax.validation.constraints.NotNull;
 public class Room {
 
     @Id
-    @NotNull
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @NotNull
     private String name;
