@@ -18,18 +18,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class RoomService {
 
-    private static final Logger LOGGER =LoggerFactory.getLogger(RoomService .class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RoomService.class);
 
     private final RoomRepository roomRepository;
 
     //IoC
     //Dependecy Injection(from Ioc container)
- @Autowired
+    @Autowired
     public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
+
     public Room createRoom(SaveRoomRequest request) {
-        LOGGER.info("Creating room {} ",  request);
+        LOGGER.info("Creating room {} ", request);
 
         Room room = new Room();
         room.setName(request.getName());
@@ -48,35 +49,34 @@ public class RoomService {
 //            throw new ResourceNotFoundException("Room" + id + "not found.");
 //        }
 
-        return  roomRepository.findById(id)
+        return roomRepository.findById(id)
                 //lambda expressions
                 .orElseThrow(() -> new ResourceNotFoundException("Room" + id + " not found"));
     }
 
+    // nu a functionat metoda
 //    public Page<Room> getRooms(GetRoomsRequest request, Pageable pageable) {
 //        LOGGER.info("Searching rooms : {} ", request);
-//
+
 //        if (request != null) {
 //            if (request.getPartialName() != null) {
 //                return roomRepository.findByNameContaining(request.getPartialName(), pageable);
-//            } else if (request.getPartialName() != null) {
-//                return roomRepository.findByNameContaining(request.getPartialName(), pageable);
 //            }
-//    }
 
-    public Room updateRoom( long id, SaveRoomRequest request ) {
-        LOGGER.info("Updating room {}: {}", id, request);
+            public Room updateRoom ( long id, SaveRoomRequest request ){
+                LOGGER.info("Updating room {}: {}", id, request);
 
-        Room room = getRoom(id);
+                Room room = getRoom(id);
 
-        BeanUtils.copyProperties(request, room);
+                BeanUtils.copyProperties(request, room);
 
-        return roomRepository.save(room);
-    }
+                return roomRepository.save(room);
+            }
 
-    public void deleteRoom(long id) {
-        LOGGER.info("Deleting room {}: {}", id);
+            public void deleteRoom ( long id){
+                LOGGER.info("Deleting room {}: {}", id);
 
-        roomRepository.deleteById(id);
-    }
-}
+                roomRepository.deleteById(id);
+            }
+
+        }

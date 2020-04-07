@@ -1,14 +1,21 @@
 package org.fasttrackit.smarthome.web;
 
+import org.fasttrackit.smarthome.domain.Room;
 import org.fasttrackit.smarthome.service.RoomService;
+import org.fasttrackit.smarthome.transfer.room.GetRoomsRequest;
+import org.fasttrackit.smarthome.transfer.room.SaveRoomRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/rooms")
 public class RoomController {
 
     private final RoomService roomService;
@@ -18,4 +25,31 @@ public class RoomController {
         this.roomService = roomService;
     }
 
+    @PostMapping
+    public ResponseEntity<Room> createRoom(@Valid @RequestBody SaveRoomRequest request) {
+        Room room = roomService.createRoom(request);
+        return new ResponseEntity<>(room, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Room> getRoom(@PathVariable long id) {
+        Room room = roomService.getRoom(id);
+        return new ResponseEntity<>(room, HttpStatus.OK);
+    }
+
+    //    @GetMapping
+//    public ResponseEntity<Page<Room>> getRooms(GetRoomsRequest request, Pageable pageable) {
+//        roomService.getRoom(request, pageable);
+//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Room> updateRoom(@PathVariable long id, @Valid @RequestBody SaveRoomRequest request) {
+        Room room = roomService.updateRoom(id, request);
+        return new ResponseEntity<>(room, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteRoom(@PathVariable long id) {
+        roomService.deleteRoom(id);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 }
