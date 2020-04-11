@@ -37,10 +37,11 @@ public class RoomController {
         return new ResponseEntity<>(room, HttpStatus.OK);
     }
 
-    //    @GetMapping
-//    public ResponseEntity<Page<Room>> getRooms(GetRoomsRequest request, Pageable pageable) {
-//        roomService.getRoom(request, pageable);
-//    }
+        @GetMapping
+    public ResponseEntity<Page<Room>> getAllRooms(GetRoomsRequest request, Pageable pageable) {
+            Page<Room> allRooms = roomService.getAllRooms(request, pageable);
+            return new ResponseEntity<>(allRooms, HttpStatus.OK);
+    }
     @PutMapping("/{id}")
     public ResponseEntity<Room> updateRoom(@PathVariable long id, @Valid @RequestBody SaveRoomRequest request) {
         Room room = roomService.updateRoom(id, request);

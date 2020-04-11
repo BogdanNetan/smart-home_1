@@ -13,6 +13,24 @@ public class Room {
     private long id;
     @NotNull
     private String name;
+    private double temperature;
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", temperature=" + temperature +
+                '}';
+    }
+
+    public double getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
+    }
 
     public long getId() {
         return id;
@@ -30,11 +48,4 @@ public class Room {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "Room{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }

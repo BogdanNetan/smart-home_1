@@ -14,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class RoomService {
@@ -34,6 +36,7 @@ public class RoomService {
 
         Room room = new Room();
         room.setName(request.getName());
+        room.setTemperature(request.getTemperature());
 
         return roomRepository.save(room);
     }
@@ -54,29 +57,34 @@ public class RoomService {
                 .orElseThrow(() -> new ResourceNotFoundException("Room" + id + " not found"));
     }
 
-    // nu a functionat metoda
-//    public Page<Room> getRooms(GetRoomsRequest request, Pageable pageable) {
-//        LOGGER.info("Searching rooms : {} ", request);
+    public Page<Room> getAllRooms(GetRoomsRequest request, Pageable pageable) {
+        LOGGER.info("Searching rooms : {} ", request);
 
-//        if (request != null) {
-//            if (request.getPartialName() != null) {
-//                return roomRepository.findByNameContaining(request.getPartialName(), pageable);
-//            }
-
-            public Room updateRoom ( long id, SaveRoomRequest request ){
-                LOGGER.info("Updating room {}: {}", id, request);
-
-                Room room = getRoom(id);
-
-                BeanUtils.copyProperties(request, room);
-
-                return roomRepository.save(room);
+        if (request != null) {
+            if (request.getPartialName() != null) {
+                roomRepository.findByNameContaining(request.getPartialName(), pageable);
+                return roomRepository.findByNameContaining(request.getPartialName(), pageable);
             }
-
-            public void deleteRoom ( long id){
-                LOGGER.info("Deleting room {}: {}", id);
-
-                roomRepository.deleteById(id);
-            }
-
         }
+        return roomRepository.findAll(pageable);
+    }
+
+
+
+    public Room updateRoom(long id, SaveRoomRequest request) {
+        LOGGER.info("Updating room {}: {}", id, request);
+
+        Room room = getRoom(id);
+
+        BeanUtils.copyProperties(request, room);
+
+        return roomRepository.save(room);
+    }
+
+    public void deleteRoom(long id) {
+        LOGGER.info("Deleting room {}:", id);
+
+        roomRepository.deleteById(id);
+    }
+}
+
