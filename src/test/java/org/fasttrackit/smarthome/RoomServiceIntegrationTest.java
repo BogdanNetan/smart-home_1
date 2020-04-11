@@ -6,28 +6,24 @@ import org.fasttrackit.smarthome.service.RoomService;
 import org.fasttrackit.smarthome.transfer.room.SaveRoomRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
-
+import static org.hamcrest.core.IsNull.notNullValue;
 
 @SpringBootTest
 public class RoomServiceIntegrationTest {
 
-
     @Autowired
     private RoomService roomService;
-
     @Test
     void createRoom_whenValidRequest_thenRoomIsCreated() {
 
         createRoom();
     }
-
     @Test
     void getRoom_whenExistingRoom_thenReturn_Room() {
         Room room = createRoom();
@@ -44,8 +40,6 @@ public class RoomServiceIntegrationTest {
         Assertions.assertThrows(ResourceNotFoundException.class,
                 () -> roomService.getRoom(564556464));
     }
-
-
 
 
     @Test
@@ -73,7 +67,10 @@ public class RoomServiceIntegrationTest {
                 () -> roomService.getRoom(room.getId()));
     }
 
+
     private Room createRoom() {
+
+
         SaveRoomRequest request = new SaveRoomRequest();
         request.setName("Dormnitor");
 
@@ -86,3 +83,7 @@ public class RoomServiceIntegrationTest {
         return room;
     }
 }
+
+
+
+

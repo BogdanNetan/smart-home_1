@@ -32,13 +32,12 @@ public class RoomService {
     }
 
     public Room createRoom(SaveRoomRequest request) {
-        LOGGER.info("Creating room {} ", request);
+            LOGGER.info("Creating room {} ", request);
 
-        Room room = new Room();
-        room.setName(request.getName());
-        room.setTemperature(request.getTemperature());
+            Room room = new Room();
+            room.setName(request.getName());
 
-        return roomRepository.save(room);
+            return roomRepository.save(room);
     }
 
     public Room getRoom(long id) {
@@ -68,8 +67,6 @@ public class RoomService {
         }
         return roomRepository.findAll(pageable);
     }
-
-
 
     public Room updateRoom(long id, SaveRoomRequest request) {
         LOGGER.info("Updating room {}: {}", id, request);

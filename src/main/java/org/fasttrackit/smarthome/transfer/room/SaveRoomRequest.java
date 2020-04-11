@@ -8,23 +8,7 @@ public class SaveRoomRequest {
 
     @NotNull
     private String name;
-    private double temperature;
 
-    @Override
-    public String toString() {
-        return "SaveRoomRequest{" +
-                "name='" + name + '\'' +
-                ", temperature=" + temperature +
-                '}';
-    }
-
-    public double getTemperature() {
-        return temperature;
-    }
-
-    public void setTemperature(double temperature) {
-        this.temperature = temperature;
-    }
 
     public String getName() {
         return name;
@@ -34,4 +18,10 @@ public class SaveRoomRequest {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return "SaveRoomRequest{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }
