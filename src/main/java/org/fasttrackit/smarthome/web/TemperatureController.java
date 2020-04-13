@@ -1,5 +1,6 @@
 package org.fasttrackit.smarthome.web;
 
+import org.fasttrackit.smarthome.domain.Temperature;
 import org.fasttrackit.smarthome.service.TemperatureService;
 import org.fasttrackit.smarthome.transfer.temperature.SaveTemperatureRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,28 +13,27 @@ import javax.validation.Valid;
 @CrossOrigin
 @RequestMapping("/temperatures")
 @RestController
-public class TemperatureController {}
+public class TemperatureController {
 //
-//    private final TemperatureService temperatureService;
+    private final TemperatureService temperatureService;
 
-//    @Autowired
-//    public TemperatureController(TemperatureService temperatureService) {
-//        this.temperatureService = temperatureService;
-//    }
+    @Autowired
+    public TemperatureController(TemperatureService temperatureService) {
+        this.temperatureService = temperatureService;
+    }
 
-//    @PostMapping
-//    public ResponseEntity<Temperature> createTemperature(@Valid @RequestBody SaveTemperatureRequest request) {
-//
-//        Temperature temperature = temperatureService.createTemperature(request);
-//        return new ResponseEntity<>(temperature, HttpStatus.CREATED);
-//    }}
+    @PostMapping
+    public ResponseEntity<Temperature> createTemperature(@Valid @RequestBody SaveTemperatureRequest request) {
 
-//    @PutMapping
-//    public ResponseEntity<Temperature> updateTemperature(@PathVariable long id, @Valid @RequestBody SaveTemperatureRequest request) {
-//
-//        Temperature temperature = temperatureService.updateTemperature(request);
-//        return new ResponseEntity<>(temperature, HttpStatus.OK);
-//
-//    }
-//
-//}
+        Temperature temperature = temperatureService.createTemperature(request);
+        return new ResponseEntity<>(temperature, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Temperature> updateTemperature(@PathVariable long id, @Valid @RequestBody SaveTemperatureRequest request) {
+
+        Temperature temperature = temperatureService.updateTemperature(id, request);
+        return new ResponseEntity<>(temperature, HttpStatus.OK);
+    }
+
+}
