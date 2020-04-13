@@ -70,7 +70,6 @@ public class RoomServiceIntegrationTest {
 
     private Room createRoom() {
 
-
         SaveRoomRequest request = new SaveRoomRequest();
         request.setName("Dormnitor");
 
