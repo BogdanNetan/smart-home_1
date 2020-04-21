@@ -1,15 +1,17 @@
 package org.fasttrackit.smarthome.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
 public class Temperature {
+
     @Id
     @GeneratedValue
     private long id;
+
+
+
 
     @NotNull
     private double optimalValue;

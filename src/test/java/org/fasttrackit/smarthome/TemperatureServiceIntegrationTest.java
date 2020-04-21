@@ -3,6 +3,7 @@ package org.fasttrackit.smarthome;
 
 import org.fasttrackit.smarthome.domain.Temperature;
 import org.fasttrackit.smarthome.service.TemperatureService;
+import org.fasttrackit.smarthome.steps.RoomTestSteps;
 import org.fasttrackit.smarthome.transfer.temperature.SaveTemperatureRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,10 @@ public class TemperatureServiceIntegrationTest {
     @Autowired
     private TemperatureService temperatureService;
 
+
     @Test
     void createTemperature_whenValidRequest_thenTemperatureIsCreated() {
         createTemperature();
-
     }
 
     @Test
@@ -46,16 +47,16 @@ public class TemperatureServiceIntegrationTest {
         request.setOptimalValue(temperature.getOptimalValue());
         request.setTargetValue(temperature.getTargetValue() + 1);
 
-        Temperature updatedTemperature = temperatureService.updateTemperature(temperature.getId(),request);
+        Temperature updatedTemperature = temperatureService.updateTemperature(temperature.getId(), request);
 
         assertThat(updatedTemperature, notNullValue());
         assertThat(updatedTemperature.getId(), is(temperature.getId()));
-        assertThat(temperature.getOptimalValue(), is(request.getOptimalValue()));
-        assertThat(temperature.getTargetValue(), is(request.getTargetValue()));
+        assertThat(updatedTemperature.getOptimalValue(), is(request.getOptimalValue()));
+        assertThat(updatedTemperature.getTargetValue(), is(request.getTargetValue()));
     }
 
 
-    private Temperature createTemperature() {
+    public Temperature createTemperature() {
         SaveTemperatureRequest request = new SaveTemperatureRequest();
 
         request.setOptimalValue(21);

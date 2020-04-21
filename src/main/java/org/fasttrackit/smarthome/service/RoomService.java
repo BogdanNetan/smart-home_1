@@ -1,9 +1,11 @@
 package org.fasttrackit.smarthome.service;
 
 
+import org.fasttrackit.smarthome.domain.Temperature;
 import org.fasttrackit.smarthome.exception.ResourceNotFoundException;
 import org.fasttrackit.smarthome.persistance.RoomRepository;
 import org.fasttrackit.smarthome.domain.Room;
+import org.fasttrackit.smarthome.transfer.room.AddTemperatureToRoomRequest;
 import org.fasttrackit.smarthome.transfer.room.GetRoomsRequest;
 import org.fasttrackit.smarthome.transfer.room.SaveRoomRequest;
 import org.slf4j.Logger;
@@ -14,8 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 
 @Service
 public class RoomService {
@@ -23,12 +23,14 @@ public class RoomService {
     private static final Logger LOGGER = LoggerFactory.getLogger(RoomService.class);
 
     private final RoomRepository roomRepository;
+    private final TemperatureService temperatureService;
 
     //IoC
     //Dependecy Injection(from Ioc container)
     @Autowired
-    public RoomService(RoomRepository roomRepository) {
+    public RoomService(RoomRepository roomRepository,TemperatureService temperatureService) {
         this.roomRepository = roomRepository;
+        this.temperatureService = temperatureService;
     }
 
     public Room createRoom(SaveRoomRequest request) {
@@ -82,6 +84,20 @@ public class RoomService {
         LOGGER.info("Deleting room {}:", id);
 
         roomRepository.deleteById(id);
+    }
+
+    public void addTemperatureToRoom(AddTemperatureToRoomRequest request) {
+
+        LOGGER.info("Adding temperature to room: {}" , request);
+
+        Room room = roomRepository.findById(request.getTemperatureId())
+                .orElse(new Room());
+
+
+        if (room.getTemperature() == null) {
+            Temperature temperature = temperatureService.getTemperature(request.getTemperatureId());
+            room.setTemperature(temperature);
+        }
     }
 }
 

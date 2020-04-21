@@ -1,13 +1,20 @@
 package org.fasttrackit.smarthome;
 
 import org.fasttrackit.smarthome.domain.Room;
+import org.fasttrackit.smarthome.domain.Temperature;
 import org.fasttrackit.smarthome.exception.ResourceNotFoundException;
 import org.fasttrackit.smarthome.service.RoomService;
+import org.fasttrackit.smarthome.steps.RoomTestSteps;
+import org.fasttrackit.smarthome.steps.TemperatureTestSteps;
+import org.fasttrackit.smarthome.transfer.room.AddTemperatureToRoomRequest;
 import org.fasttrackit.smarthome.transfer.room.SaveRoomRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Collection;
+import java.util.Collections;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -19,14 +26,20 @@ public class RoomServiceIntegrationTest {
 
     @Autowired
     private RoomService roomService;
+    @Autowired
+    private RoomTestSteps roomTestSteps;
+    @Autowired
+    private TemperatureTestSteps temperatureTestSteps;
+
     @Test
     void createRoom_whenValidRequest_thenRoomIsCreated() {
 
-        createRoom();
+        roomTestSteps.createRoom();
     }
+
     @Test
     void getRoom_whenExistingRoom_thenReturn_Room() {
-        Room room = createRoom();
+        Room room = roomTestSteps.createRoom();
 
         Room response = roomService.getRoom(room.getId());
 
@@ -45,7 +58,7 @@ public class RoomServiceIntegrationTest {
     @Test
     void UpdateRoom_whenValidRequest_thenReturnUpdatedRoom() {
 
-        Room room = createRoom();
+        Room room = roomTestSteps.createRoom();
 
         SaveRoomRequest request = new SaveRoomRequest();
         request.setName(room.getName() + " updated ");
@@ -59,7 +72,8 @@ public class RoomServiceIntegrationTest {
 
     @Test
     void deleteRoom_whenExistingRoom_thenRoomDoesNotExistAnyMore() {
-        Room room = createRoom();
+        Room room = roomTestSteps.createRoom();
+
 
         roomService.deleteRoom(room.getId());
 
@@ -67,20 +81,33 @@ public class RoomServiceIntegrationTest {
                 () -> roomService.getRoom(room.getId()));
     }
 
+    @Test
+    void addTemperatureToRoom_whenNewRoom_thenRoomIsCreated() {
+//        Room room = roomTestSteps.createRoom();
+        Temperature temperature = temperatureTestSteps.createTemperature();
 
-    private Room createRoom() {
+        AddTemperatureToRoomRequest roomRequest = new AddTemperatureToRoomRequest();
 
-        SaveRoomRequest request = new SaveRoomRequest();
-        request.setName("Dormnitor");
+        roomRequest.setTemperatureId(temperature.getId());
+//        roomRequest.setRoomIds(Collections.singletonList(room.getId()));
 
-        Room room = roomService.createRoom(request);
-
-        assertThat(room, notNullValue());
-        assertThat(room.getId(), greaterThan(0L));
-        assertThat(room.getName(), is(request.getName()));
-
-        return room;
+        roomService.addTemperatureToRoom(roomRequest);
     }
+
+
+//    private Room createRoom() {
+//
+//        SaveRoomRequest request = new SaveRoomRequest();
+//        request.setName("Dormnitor");
+//
+//        Room room = roomService.createRoom(request);
+//
+//        assertThat(room, notNullValue());
+//        assertThat(room.getId(), greaterThan(0L));
+//        assertThat(room.getName(), is(request.getName()));
+//
+//        return room;
+//    }
 }
 
 

@@ -1,17 +1,23 @@
 package org.fasttrackit.smarthome.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
 public class Room {
 
     @Id
-    @GeneratedValue
+//    @GeneratedValue
     private long id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "id", foreignKey = @ForeignKey(name = "temperature_id"))
+    private Temperature temperature;
+
+
+
+
     @NotNull
     private String name;
 
@@ -32,11 +38,23 @@ public class Room {
         this.name = name;
     }
 
+    public Temperature getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(Temperature temperature) {
+        this.temperature = temperature;
+    }
+
     @Override
     public String toString() {
         return "Room{" +
                 "id=" + id +
+                ", temperature=" + temperature +
                 ", name='" + name + '\'' +
                 '}';
     }
 }
+
+
+
