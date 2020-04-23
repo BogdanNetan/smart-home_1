@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @CrossOrigin
-@RequestMapping ("/temperatures")
+@RequestMapping("/temperatures")
 @RestController
 public class TemperatureController {
 
@@ -40,19 +40,12 @@ public class TemperatureController {
         return new ResponseEntity<>(temperature, HttpStatus.OK);
     }
 
-    @PutMapping ("/{id}")
-    public  ResponseEntity<Temperature> updateTemperature(@PathVariable long id,
-                                                          @Valid @RequestBody SaveTemperatureRequest request) {
-
-        Temperature temperature = temperatureService.updateTemperature(id,request);
-        return new ResponseEntity<>(temperature, HttpStatus.OK);
-    }}
-//
-//}
-//
+    @PutMapping("/{id}")
+    public ResponseEntity<Temperature> updateTemperature(@PathVariable long id,
+                                                         @Valid @RequestBody SaveTemperatureRequest request) {
 
         Temperature temperature = temperatureService.updateTemperature(id, request);
         return new ResponseEntity<>(temperature, HttpStatus.OK);
     }
-
+}
 

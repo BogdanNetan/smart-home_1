@@ -59,16 +59,6 @@ public class RoomServiceIntegrationTest {
         assertThat(updateRoom.getId(), is(room.getId()));
         assertThat(updateRoom.getName(), is(request.getName()));
     }
-
-    @Test
-    void deleteRoom_whenExistingRoom_thenRoomDoesNotExistAnyMore() {
-        Room room = roomTestSteps.createRoom();
-
-        roomService.deleteRoom(room.getId());
-
-        Assertions.assertThrows(ResourceNotFoundException.class,
-                () -> roomService.getRoom(room.getId()));
-    }
 }
 
 

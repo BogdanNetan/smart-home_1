@@ -6,6 +6,7 @@ import org.fasttrackit.smarthome.domain.Temperature;
 import org.fasttrackit.smarthome.service.TemperatureService;
 import org.fasttrackit.smarthome.steps.RoomTestSteps;
 import org.fasttrackit.smarthome.steps.TemperatureTestSteps;
+import org.fasttrackit.smarthome.steps.TemperatureTestSteps;
 import org.fasttrackit.smarthome.transfer.temperature.AddTemperatureToRoomRequest;
 import org.fasttrackit.smarthome.transfer.temperature.SaveTemperatureRequest;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.core.IsNull.notNullValue;
 
 @SpringBootTest
@@ -32,6 +32,8 @@ public class TemperatureServiceIntegrationTest {
     void createTemperature_whenValidRequest_thenTemperatureIsCreated() {
         temperatureTestSteps.createTemperature();
     }
+
+
 
     @Test
     void getTemperture_whenExistingTemperature_thenReturnTemperature() {
@@ -61,17 +63,14 @@ public class TemperatureServiceIntegrationTest {
         assertThat(updatedTemperature.getOptimalValue(), is(request.getOptimalValue()));
         assertThat(updatedTemperature.getTargetValue(), is(request.getTargetValue()));
     }
-
     @Test
-    void AddTemperatureToRoom_whenNewgRoom_thenRoomIsCreated() {
+    void addTemperatureToRoom_whenNewRoom_thenRoomIsCreated() {
         Room room = roomTestSteps.createRoom();
 
-        AddTemperatureToRoomRequest temperatureToRoomRequest = new AddTemperatureToRoomRequest();
+        AddTemperatureToRoomRequest temperatureRequest = new AddTemperatureToRoomRequest();
+        temperatureRequest.setRoomId(room.getId());
 
-        temperatureToRoomRequest.setRoomId(room.getId());
-
-        temperatureService.addTemperatureToRoom(temperatureToRoomRequest);
-
+        temperatureService.addTemperaturesToRoom(temperatureRequest);
     }
 
 

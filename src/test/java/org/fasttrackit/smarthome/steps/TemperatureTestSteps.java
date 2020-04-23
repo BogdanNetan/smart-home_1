@@ -22,7 +22,7 @@ public class TemperatureTestSteps {
         SaveTemperatureRequest request = new SaveTemperatureRequest();
 
         request.setOptimalValue(21);
-        request.setTargetValue(21);
+        request.setTargetValue(22);
 
         Temperature temperature = temperatureService.createTemperature(request);
 

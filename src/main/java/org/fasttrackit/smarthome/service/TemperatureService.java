@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 public class TemperatureService {
@@ -30,7 +31,6 @@ public class TemperatureService {
     public TemperatureService(TemperatureRepository temperatureRepository, ObjectMapper objectMapper, RoomService roomService) {
         this.temperatureRepository = temperatureRepository;
         this.objectMapper = objectMapper;
-
         this.roomService = roomService;
     }
 
@@ -42,6 +42,7 @@ public class TemperatureService {
 
         return temperatureRepository.save(temperature);
     }
+
 
     public Temperature getTemperature(long id) {
         LOGGER.info("Retieving temperature {} ", id);
@@ -60,18 +61,16 @@ public class TemperatureService {
 
         return temperatureRepository.save(temperature);
     }
-
     @Transactional
-    public void addTemperatureToRoom(AddTemperatureToRoomRequest request) {
-        LOGGER.info("Adding temperature to room {}:  ", request);
+    public void addTemperaturesToRoom(AddTemperatureToRoomRequest request) {
+
+        LOGGER.info(" Adding temperature to room: {} ", request);
 
         Temperature temperature = temperatureRepository.findById(request.getRoomId()).orElse(new Temperature());
 
         if (temperature.getRoom() == null) {
-
             Room room = roomService.getRoom(request.getRoomId());
             temperature.setRoom(room);
-
         }
         temperatureRepository.save(temperature);
     }

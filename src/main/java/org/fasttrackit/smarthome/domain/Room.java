@@ -1,5 +1,7 @@
 package org.fasttrackit.smarthome.domain;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -29,6 +31,8 @@ public class Room {
     public void setName(String name) {
         this.name = name;
     }
+
+
 
     @Override
     public String toString() {

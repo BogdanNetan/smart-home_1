@@ -7,13 +7,20 @@ import javax.validation.constraints.NotNull;
 public class Temperature {
 
     @Id
+
     private long id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     private Room room;
 
+    public Room getRoom() {
+        return room;
+    }
 
+    public void setRoom(Room room) {
+        this.room = room;
+    }
 
     @NotNull
     private double optimalValue;
@@ -44,13 +51,6 @@ public class Temperature {
         this.targetValue = targetValue;
     }
 
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
-    }
 
     @Override
     public String toString() {

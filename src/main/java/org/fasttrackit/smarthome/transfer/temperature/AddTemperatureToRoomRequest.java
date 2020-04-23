@@ -1,5 +1,6 @@
 package org.fasttrackit.smarthome.transfer.temperature;
 
+
 import java.util.List;
 
 public class AddTemperatureToRoomRequest {
