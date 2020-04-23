@@ -1,9 +1,12 @@
 package org.fasttrackit.smarthome;
 
 
+import org.fasttrackit.smarthome.domain.Room;
 import org.fasttrackit.smarthome.domain.Temperature;
 import org.fasttrackit.smarthome.service.TemperatureService;
 import org.fasttrackit.smarthome.steps.RoomTestSteps;
+import org.fasttrackit.smarthome.steps.TemperatureTestSteps;
+import org.fasttrackit.smarthome.transfer.temperature.AddTemperatureToRoomRequest;
 import org.fasttrackit.smarthome.transfer.temperature.SaveTemperatureRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +22,20 @@ public class TemperatureServiceIntegrationTest {
 
     @Autowired
     private TemperatureService temperatureService;
+    @Autowired
+    private TemperatureTestSteps temperatureTestSteps;
+    @Autowired
+    private RoomTestSteps roomTestSteps;
 
 
     @Test
     void createTemperature_whenValidRequest_thenTemperatureIsCreated() {
-        createTemperature();
+        temperatureTestSteps.createTemperature();
     }
 
     @Test
     void getTemperture_whenExistingTemperature_thenReturnTemperature() {
-        Temperature temperature = createTemperature();
+        Temperature temperature = temperatureTestSteps.createTemperature();
 
         Temperature response = temperatureService.getTemperature(temperature.getId());
 
@@ -40,7 +47,7 @@ public class TemperatureServiceIntegrationTest {
 
     @Test
     void UpdateTemperature_whenValidRequest_thenReturnUpdatedTemperature() {
-        Temperature temperature = createTemperature();
+        Temperature temperature = temperatureTestSteps.createTemperature();
 
         SaveTemperatureRequest request = new SaveTemperatureRequest();
 
@@ -55,21 +62,34 @@ public class TemperatureServiceIntegrationTest {
         assertThat(updatedTemperature.getTargetValue(), is(request.getTargetValue()));
     }
 
+    @Test
+    void AddTemperatureToRoom_whenNewgRoom_thenRoomIsCreated() {
+        Room room = roomTestSteps.createRoom();
 
-    public Temperature createTemperature() {
-        SaveTemperatureRequest request = new SaveTemperatureRequest();
+        AddTemperatureToRoomRequest temperatureToRoomRequest = new AddTemperatureToRoomRequest();
 
-        request.setOptimalValue(21);
-        request.setTargetValue(21);
+        temperatureToRoomRequest.setRoomId(room.getId());
 
-        Temperature temperature = temperatureService.createTemperature(request);
+        temperatureService.addTemperatureToRoom(temperatureToRoomRequest);
 
-        assertThat(temperature, notNullValue());
-        assertThat(temperature.getId(), greaterThan(0L));
-        assertThat(temperature.getOptimalValue(), is(request.getOptimalValue()));
-        assertThat(temperature.getTargetValue(), is(request.getTargetValue()));
-        return temperature;
     }
+
+
+//    public Temperature createTemperature() {
+//
+//        SaveTemperatureRequest request = new SaveTemperatureRequest();
+//
+//        request.setOptimalValue(21);
+//        request.setTargetValue(21);
+//
+//        Temperature temperature = temperatureService.createTemperature(request);
+//
+//        assertThat(temperature, notNullValue());
+//        assertThat(temperature.getId(), greaterThan(0L));
+//        assertThat(temperature.getOptimalValue(), is(request.getOptimalValue()));
+//        assertThat(temperature.getTargetValue(), is(request.getTargetValue()));
+//        return temperature;
+//    }
 }
 
 

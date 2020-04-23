@@ -42,6 +42,7 @@ public class RoomController {
             Page<Room> allRooms = roomService.getAllRooms(request, pageable);
             return new ResponseEntity<>(allRooms, HttpStatus.OK);
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<Room> updateRoom(@PathVariable long id, @Valid @RequestBody SaveRoomRequest request) {
         Room room = roomService.updateRoom(id, request);
@@ -53,5 +54,4 @@ public class RoomController {
         roomService.deleteRoom(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
-
 }

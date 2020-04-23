@@ -30,8 +30,7 @@ public class TemperatureTestSteps {
         assertThat(temperature.getId(), greaterThan(0L));
         assertThat(temperature.getOptimalValue(), is(request.getOptimalValue()));
         assertThat(temperature.getTargetValue(), is(request.getTargetValue()));
+
         return temperature;
     }
-
-
 }

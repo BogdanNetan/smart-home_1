@@ -2,15 +2,19 @@ package org.fasttrackit.smarthome.service;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.fasttrackit.smarthome.domain.Room;
 import org.fasttrackit.smarthome.domain.Temperature;
 import org.fasttrackit.smarthome.exception.ResourceNotFoundException;
 import org.fasttrackit.smarthome.persistance.TemperatureRepository;
+import org.fasttrackit.smarthome.transfer.temperature.AddTemperatureToRoomRequest;
 import org.fasttrackit.smarthome.transfer.temperature.SaveTemperatureRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Service
 public class TemperatureService {
@@ -19,11 +23,15 @@ public class TemperatureService {
 
     private final TemperatureRepository temperatureRepository;
     private final ObjectMapper objectMapper;
+    private final RoomService roomService;
+
 
     @Autowired
-    public TemperatureService(TemperatureRepository temperatureRepository, ObjectMapper objectMapper) {
+    public TemperatureService(TemperatureRepository temperatureRepository, ObjectMapper objectMapper, RoomService roomService) {
         this.temperatureRepository = temperatureRepository;
         this.objectMapper = objectMapper;
+
+        this.roomService = roomService;
     }
 
     public Temperature createTemperature(SaveTemperatureRequest request) {
@@ -51,6 +59,21 @@ public class TemperatureService {
         BeanUtils.copyProperties(request, temperature);
 
         return temperatureRepository.save(temperature);
+    }
+
+    @Transactional
+    public void addTemperatureToRoom(AddTemperatureToRoomRequest request) {
+        LOGGER.info("Adding temperature to room {}:  ", request);
+
+        Temperature temperature = temperatureRepository.findById(request.getRoomId()).orElse(new Temperature());
+
+        if (temperature.getRoom() == null) {
+
+            Room room = roomService.getRoom(request.getRoomId());
+            temperature.setRoom(room);
+
+        }
+        temperatureRepository.save(temperature);
     }
 }
 
