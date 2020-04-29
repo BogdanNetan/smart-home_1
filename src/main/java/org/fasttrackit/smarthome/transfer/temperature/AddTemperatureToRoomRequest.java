@@ -6,7 +6,7 @@ import java.util.List;
 public class AddTemperatureToRoomRequest {
 
     private long roomId;
-    private List<Long> temperatureIds;
+    private long temperatureId;
 
     public long getRoomId() {
         return roomId;
@@ -16,19 +16,20 @@ public class AddTemperatureToRoomRequest {
         this.roomId = roomId;
     }
 
-    public List<Long> getTemperatureIds() {
-        return temperatureIds;
+    public long getTemperatureId() {
+        return temperatureId;
     }
 
-    public void setTemperatureIds(List<Long> temperatureIds) {
-        this.temperatureIds = temperatureIds;
+    public void setTemperatureId(long temperatureId) {
+        this.temperatureId = temperatureId;
     }
 
     @Override
     public String toString() {
         return "AddTemperatureToRoomRequest{" +
                 "roomId=" + roomId +
-                ", temperatureIds=" + temperatureIds +
+                ", temperatureId=" + temperatureId +
                 '}';
     }
 }
+

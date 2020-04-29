@@ -11,41 +11,41 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
-@CrossOrigin
-@RequestMapping("/temperatures")
-@RestController
-public class TemperatureController {
-
-
-    private final TemperatureService temperatureService;
-
-    @Autowired
-    public TemperatureController(TemperatureService temperatureService) {
-        this.temperatureService = temperatureService;
-    }
-
-    @PostMapping
-    public ResponseEntity<Temperature> createTemperature(@Valid @RequestBody SaveTemperatureRequest request) {
-
-        Temperature temperature = temperatureService.createTemperature(request);
-        return new ResponseEntity<>(temperature, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Temperature> getTemperature(@PathVariable String id) {
-        Long longId = Long.parseLong(id);
-        Temperature temperature = temperatureService.getTemperature(longId);
-
-        return new ResponseEntity<>(temperature, HttpStatus.OK);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Temperature> updateTemperature(@PathVariable long id,
-                                                         @Valid @RequestBody SaveTemperatureRequest request) {
-
-        Temperature temperature = temperatureService.updateTemperature(id, request);
-        return new ResponseEntity<>(temperature, HttpStatus.OK);
-    }
-}
+//
+//@CrossOrigin
+//@RequestMapping("/temperatures")
+//@RestController
+//public class TemperatureController {
+//
+//
+//    private final TemperatureService temperatureService;
+//
+//    @Autowired
+//    public TemperatureController(TemperatureService temperatureService) {
+//        this.temperatureService = temperatureService;
+//    }
+//
+//    @PostMapping
+//    public ResponseEntity<Temperature> createTemperature(@Valid @RequestBody SaveTemperatureRequest request) {
+//
+//        Temperature temperature = temperatureService.createTemperature(request);
+//        return new ResponseEntity<>(temperature, HttpStatus.CREATED);
+//    }
+//
+//    @GetMapping("/{id}")
+//    public ResponseEntity<Temperature> getTemperature(@PathVariable String id) {
+//        Long longId = Long.parseLong(id);
+//        Temperature temperature = temperatureService.getTemperature(longId);
+//
+//        return new ResponseEntity<>(temperature, HttpStatus.OK);
+//    }
+//
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Temperature> updateTemperature(@PathVariable long id,
+//                                                         @Valid @RequestBody SaveTemperatureRequest request) {
+//
+//        Temperature temperature = temperatureService.updateTemperature(id, request);
+//        return new ResponseEntity<>(temperature, HttpStatus.OK);
+//    }
+//}
 

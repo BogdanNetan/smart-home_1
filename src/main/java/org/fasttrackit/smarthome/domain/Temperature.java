@@ -2,25 +2,26 @@ package org.fasttrackit.smarthome.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Temperature {
 
     @Id
-
     private long id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     private Room room;
 
+
+
     public Room getRoom() {
         return room;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
-    }
 
     @NotNull
     private double optimalValue;
@@ -51,6 +52,9 @@ public class Temperature {
         this.targetValue = targetValue;
     }
 
+    public void setRoom(Room room) {
+        this.room = room;
+    }
 
     @Override
     public String toString() {
