@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.*;
 
 @Service
 public class TemperatureService {
@@ -34,24 +33,24 @@ public class TemperatureService {
         this.roomService = roomService;
     }
 
-//    public Temperature createTemperature(SaveTemperatureRequest request) {
-//
-//        LOGGER.info("Creating temperature {} ", request);
-//
-//        Temperature temperature = objectMapper.convertValue(request, Temperature.class);
-//
-//        return temperatureRepository.save(temperature);
-//    }
+    public Temperature createTemperature(SaveTemperatureRequest request) {
 
+        LOGGER.info("Creating temperature {} ", request);
+
+        Temperature temperature = objectMapper.convertValue(request, Temperature.class);
+
+        return temperatureRepository.save(temperature);
+    }
 
 //    public Temperature getTemperature(long id) {
 //        LOGGER.info("Retieving temperature {} ", id);
+//
 //
 //        return temperatureRepository.findById(id)
 //                //lambda expressions
 //                .orElseThrow(() -> new ResourceNotFoundException("Room" + id + " not found"));
 //    }
-
+//
 //    public Temperature updateTemperature(long id, SaveTemperatureRequest request) {
 //        LOGGER.info("Updating temperature {}: {} ", id, request);
 //
@@ -63,44 +62,36 @@ public class TemperatureService {
 //    }
 
 
+    @Transactional
+    public Temperature getTemperaturesForRoom(Long roomId) {
+
+        LOGGER.info(" Getting temperature from room: {} ", roomId);
+
+        Temperature temperature = temperatureRepository.findById(roomId).orElse(null);
+
+        return temperature;
+    }
+
+
+
 
     @Transactional
-    public void addTemperaturesToRoom(AddTemperatureToRoomRequest request) {
+    public Temperature addTemperaturesToRoom(AddTemperatureToRoomRequest request) {
 
         LOGGER.info(" Adding temperature to room: {} ", request);
 
         Temperature temperature = temperatureRepository.findById(request.getRoomId())
                 .orElse(new Temperature());
 
-        temperatureRepository.findById(request.getRoomId()).orElse(new Temperature());
-        temperature.setOptimalValue(21);
-        temperature.setTargetValue(20);
+        temperature.setOptimalValue(19);
+        temperature.setTargetValue(request.getTargetValue());
 
         if (temperature.getRoom() == null) {
             Room room = roomService.getRoom(request.getRoomId());
             temperature.setRoom(room);
-
-
-            temperatureRepository.existsById(request.getRoomId());
-
-//        Temperature temperature = getTemperature(id);
-//
-//        BeanUtils.copyProperties(request, temperature);
-
-
-
-
-//
-//            List<AddTemperatureToRoomRequest> temperatureRequests = new ArrayList<>();
-//            temperature.setOptimalValue(19);
-//            temperature.setOptimalValue(25);
-//            temperatureRequests.add();
-//
-//            rooms.add(room);
-
-
         }
         temperatureRepository.save(temperature);
+        return temperature;
     }
 }
 

@@ -1,34 +1,36 @@
 package org.fasttrackit.smarthome.transfer.temperature;
 
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class AddTemperatureToRoomRequest {
 
-    private long roomId;
-    private long temperatureId;
+        private long roomId;
+    @NotNull
+    private double targetValue;
 
-    public long getRoomId() {
-        return roomId;
+        public long getRoomId() {
+            return roomId;
+        }
+
+        public void setRoomId(long roomId) {
+            this.roomId = roomId;
+        }
+
+    public double getTargetValue() {
+        return targetValue;
     }
 
-    public void setRoomId(long roomId) {
-        this.roomId = roomId;
-    }
-
-    public long getTemperatureId() {
-        return temperatureId;
-    }
-
-    public void setTemperatureId(long temperatureId) {
-        this.temperatureId = temperatureId;
+    public void setTargetValue(double targetValue) {
+        this.targetValue = targetValue;
     }
 
     @Override
     public String toString() {
         return "AddTemperatureToRoomRequest{" +
                 "roomId=" + roomId +
-                ", temperatureId=" + temperatureId +
+                ", targetValue=" + targetValue +
                 '}';
     }
 }

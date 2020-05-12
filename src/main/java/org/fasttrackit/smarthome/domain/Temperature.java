@@ -10,12 +10,12 @@ import java.util.Set;
 public class Temperature {
 
     @Id
+    @GeneratedValue
     private long id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     private Room room;
-
 
 
     public Room getRoom() {
