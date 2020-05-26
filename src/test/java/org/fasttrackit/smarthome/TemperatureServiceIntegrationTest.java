@@ -3,12 +3,15 @@ package org.fasttrackit.smarthome;
 
 import org.fasttrackit.smarthome.domain.Room;
 import org.fasttrackit.smarthome.domain.Temperature;
+import org.fasttrackit.smarthome.exception.ResourceNotFoundException;
 import org.fasttrackit.smarthome.service.TemperatureService;
 import org.fasttrackit.smarthome.steps.RoomTestSteps;
 import org.fasttrackit.smarthome.steps.TemperatureTestSteps;
 import org.fasttrackit.smarthome.steps.TemperatureTestSteps;
 import org.fasttrackit.smarthome.transfer.temperature.AddTemperatureToRoomRequest;
 import org.fasttrackit.smarthome.transfer.temperature.SaveTemperatureRequest;
+import org.fasttrackit.smarthome.transfer.temperature.TemperatureResponse;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,49 +33,85 @@ public class TemperatureServiceIntegrationTest {
 
 
     @Test
-    void addTemperatureToRoom_whenNewRoom_thenRoomIsCreated() {
-        Room room = roomTestSteps.createRoom();
-
-        AddTemperatureToRoomRequest temperatureRequest = new AddTemperatureToRoomRequest();
-        temperatureRequest.setRoomId(room.getId());
-
-        temperatureService.addTemperaturesToRoom(temperatureRequest);
+    void createTemperature_whenValidRequest_thenTemperatureIsCreated() {
+        temperaturetestSteps.createTemperature();
     }
 
     @Test
-    void UpdateTemperature_whenValidRequest_thenReturnUpdatedTemperature() {
-        Room room = roomTestSteps.createRoom();
+    void getTemperture_whenExistingTemperature_thenReturnTemperature() {
+        Temperature temperature = temperaturetestSteps.createTemperature();
 
-        AddTemperatureToRoomRequest temperatureRequest = new AddTemperatureToRoomRequest();
-        temperatureRequest.setRoomId(room.getId());
-        temperatureRequest.setTargetValue(23);
+        Temperature response = temperatureService.getTemperature(temperature.getId());
 
-        temperatureService.addTemperaturesToRoom(temperatureRequest);
+        assertThat(response, notNullValue());
+        assertThat(response.getId(), is(temperature.getId()));
+        assertThat(response.getOptimalValue(), is(temperature.getOptimalValue()));
+        assertThat(response.getTargetValue(), is(temperature.getTargetValue()));
+    }
 
-        Temperature temperaturesForRoom = temperatureService.getTemperaturesForRoom(room.getId());
-
-        assertThat(temperaturesForRoom.getTargetValue(), is(temperatureRequest.getTargetValue()));
-
-        System.out.println("update...");
-
-         temperatureRequest = new AddTemperatureToRoomRequest();
-        temperatureRequest.setRoomId(room.getId());
-        temperatureRequest.setTargetValue(25);
+    @Test
+    void getTemperature_whenNonExistingTemperature_thenThrowResourcesNotFoundException() {
+        Assertions.assertThrows(ResourceNotFoundException.class,
+                () -> temperatureService.getTemperature(564556464));
+    }
 
 
+    @Test
+    void updateTemperature() {
+        Temperature temperature = temperaturetestSteps.createTemperature();
+        SaveTemperatureRequest request = new SaveTemperatureRequest();
 
-        temperatureService.addTemperaturesToRoom(temperatureRequest);
+        request.setOptimalValue(temperature.getOptimalValue());
+        request.setTargetValue(temperature.getTargetValue());
 
-         temperaturesForRoom = temperatureService.getTemperaturesForRoom(room.getId());
-        assertThat(temperaturesForRoom.getTargetValue(), is(temperatureRequest.getTargetValue()));
+        Temperature updatedTemperature = temperatureService.updateTemperature(temperature.getId(), request);
+
+        assertThat(updatedTemperature, notNullValue());
+        assertThat(updatedTemperature.getId(), is(temperature.getId()));
+        assertThat(updatedTemperature.getOptimalValue(), is(request.getOptimalValue()));
+        assertThat(updatedTemperature.getTargetValue(), is(request.getTargetValue()));
+    }
 
 
-        System.out.println("upfae 25 grd");
 
-
-
-
-
+//    @Test
+//    void addTemperatureToRoom_whenNewRoom_thenRoomIsCreated() {
+//        Room room = roomTestSteps.createRoom();
+//
+//        AddTemperatureToRoomRequest temperatureRequest = new AddTemperatureToRoomRequest();
+//        temperatureRequest.setRoomId(room.getId());
+//
+//        temperatureService.addTemperaturesToRoom(temperatureRequest);
+//    }
+//
+//    @Test
+//    void UpdateTemperature_whenValidRequest_thenReturnUpdatedTemperature() {
+//        Room room = roomTestSteps.createRoom();
+//
+//        AddTemperatureToRoomRequest temperatureRequest = new AddTemperatureToRoomRequest();
+//        temperatureRequest.setRoomId(room.getId());
+//        temperatureRequest.setTargetValue(5);
+//
+//        temperatureService.addTemperaturesToRoom(temperatureRequest);
+//
+//        TemperatureResponse temperaturesFromRoom = temperatureService.getTemperaturesFromRoom(room.getId());
+//
+//        assertThat(temperaturesFromRoom.getTargetValue(), is(temperatureRequest.getTargetValue()));
+//
+//        System.out.println("update...");
+//
+//        temperatureRequest = new AddTemperatureToRoomRequest();
+//        temperatureRequest.setRoomId(room.getId());
+//        temperatureRequest.setTargetValue(25);
+//
+//
+//        temperatureService.addTemperaturesToRoom(temperatureRequest);
+//
+//        temperaturesFromRoom = temperatureService.getTemperaturesFromRoom(room.getId());
+//        assertThat(temperaturesFromRoom.getTargetValue(), is(temperatureRequest.getTargetValue()));
+//
+//
+//        System.out.println("upfae 25 grd");
 
 
 //
@@ -88,32 +127,15 @@ public class TemperatureServiceIntegrationTest {
 //        assertThat(updatedTemperature.getId(), is(temperature.getId()));
 //        assertThat(updatedTemperature.getOptimalValue(), is(request.getOptimalValue()));
 //        assertThat(updatedTemperature.getTargetValue(), is(request.getTargetValue()));
-    }
 
 
 
 
 
-//    @Test
-//    void createTemperature_whenValidRequest_thenTemperatureIsCreated() {
-//        temperaturetestSteps.createTemperature();
-//    }
-
-//    @Test
-//    void getTemperture_whenExistingTemperature_thenReturnTemperature() {
-//        Temperature temperature = temperaturetestSteps.createTemperature();
-//
-//        Temperature response = temperatureService.getTemperature(temperature.getId());
-//
-//        assertThat(response, notNullValue());
-//        assertThat(response.getId(), is(temperature.getId()));
-//        assertThat(response.getOptimalValue(), is(temperature.getOptimalValue()));
-//        assertThat(response.getTargetValue(), is(temperature.getTargetValue()));
-//    }
 
 
-//
-//
+
+
 
 
 

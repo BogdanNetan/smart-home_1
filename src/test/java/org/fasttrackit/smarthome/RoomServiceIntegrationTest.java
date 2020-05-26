@@ -43,7 +43,7 @@ public class RoomServiceIntegrationTest {
     void getRoom_whenNonExistingRoom_thenThrowResourcesNotFoundException() {
         Assertions.assertThrows(ResourceNotFoundException.class,
                 () -> roomService.getRoom(564556464));
-    }
+}
 
     @Test
     void UpdateRoom_whenValidRequest_thenReturnUpdatedRoom() {

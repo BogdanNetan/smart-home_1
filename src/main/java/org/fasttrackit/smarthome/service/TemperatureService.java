@@ -6,12 +6,16 @@ import org.fasttrackit.smarthome.domain.Room;
 import org.fasttrackit.smarthome.domain.Temperature;
 import org.fasttrackit.smarthome.exception.ResourceNotFoundException;
 import org.fasttrackit.smarthome.persistance.TemperatureRepository;
+import org.fasttrackit.smarthome.transfer.room.GetRoomsRequest;
 import org.fasttrackit.smarthome.transfer.temperature.AddTemperatureToRoomRequest;
 import org.fasttrackit.smarthome.transfer.temperature.SaveTemperatureRequest;
+import org.fasttrackit.smarthome.transfer.temperature.TemperatureResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -42,56 +46,74 @@ public class TemperatureService {
         return temperatureRepository.save(temperature);
     }
 
-//    public Temperature getTemperature(long id) {
-//        LOGGER.info("Retieving temperature {} ", id);
-//
-//
-//        return temperatureRepository.findById(id)
-//                //lambda expressions
-//                .orElseThrow(() -> new ResourceNotFoundException("Room" + id + " not found"));
-//    }
-//
-//    public Temperature updateTemperature(long id, SaveTemperatureRequest request) {
-//        LOGGER.info("Updating temperature {}: {} ", id, request);
-//
-//        Temperature temperature = getTemperature(id);
-//
-//        BeanUtils.copyProperties(request, temperature);
-//
-//        return temperatureRepository.save(temperature);
-//    }
+    public Temperature getTemperature(long id) {
+        LOGGER.info("Retieving temperature {} ", id);
 
-
-    @Transactional
-    public Temperature getTemperaturesForRoom(Long roomId) {
-
-        LOGGER.info(" Getting temperature from room: {} ", roomId);
-
-        Temperature temperature = temperatureRepository.findById(roomId).orElse(null);
-
-        return temperature;
+        return temperatureRepository.findById(id)
+                //lambda expressions
+                .orElseThrow(() -> new ResourceNotFoundException("Room" + id + " not found"));
     }
 
+    public Page<Temperature> getAllTemperatures(TemperatureResponse request, Pageable pageable) {
+        LOGGER.info("Searching temperatures : {} ", request);
 
-
-
-    @Transactional
-    public Temperature addTemperaturesToRoom(AddTemperatureToRoomRequest request) {
-
-        LOGGER.info(" Adding temperature to room: {} ", request);
-
-        Temperature temperature = temperatureRepository.findById(request.getRoomId())
-                .orElse(new Temperature());
-
-        temperature.setOptimalValue(19);
-        temperature.setTargetValue(request.getTargetValue());
-
-        if (temperature.getRoom() == null) {
-            Room room = roomService.getRoom(request.getRoomId());
-            temperature.setRoom(room);
+        if (request != null) {
+            if (request.getTargetValue() == 0) {
+                temperatureRepository.findAll( pageable);
+                return temperatureRepository.findAll( pageable);
+            }
         }
-        temperatureRepository.save(temperature);
-        return temperature;
+        return temperatureRepository.findAll(pageable);
     }
+
+
+    public Temperature updateTemperature(long id, SaveTemperatureRequest request) {
+        LOGGER.info("Updating temperature {}: {} ", id, request);
+
+        Temperature temperature = getTemperature(id);
+
+        BeanUtils.copyProperties(request, temperature);
+
+        return temperatureRepository.save(temperature);
+    }
+
+
+//    @Transactional
+//    public TemperatureResponse getTemperaturesFromRoom(long roomId) {
+//
+//        LOGGER.info(" Getting temperature from room: {} ", roomId);
+//
+//        Temperature temperature = temperatureRepository.findById(roomId).orElse(null);
+//
+//        TemperatureResponse temperatureResponse = new TemperatureResponse();
+//        temperatureResponse.setId(temperature.getId());
+//        temperatureResponse.setTargetValue(temperature.getTargetValue());
+//
+//        return temperatureResponse;
+//    }
+//
+//    @Transactional
+//    public Temperature addTemperaturesToRoom(AddTemperatureToRoomRequest request) {
+//
+//        LOGGER.info(" Adding temperature to room: {} ", request);
+//
+//        Temperature temperature = temperatureRepository.findById(request.getRoomId())
+//                .orElse(new Temperature());
+//
+//        temperature.setOptimalValue(19);
+//        temperature.setTargetValue(request.getTargetValue());
+//
+//        if (temperature.getRoom() == null) {
+//            Room room = roomService.getRoom(request.getRoomId());
+//            temperature.setRoom(room);
+//        }
+//
+//        TemperatureResponse temperatureResponse = new TemperatureResponse();
+//        temperatureResponse.setId(temperature.getId());
+//        temperatureResponse.setTargetValue(temperature.getTargetValue());
+//
+//        temperatureRepository.save(temperature);
+//        return temperature;
+//    }
 }
 

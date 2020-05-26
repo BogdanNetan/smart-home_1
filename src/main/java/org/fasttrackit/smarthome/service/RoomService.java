@@ -46,8 +46,8 @@ public class RoomService {
 //        if (roomOptional.isPresent()) {
 //            return roomOptional.get();
 //        } else {
-//            throw new ResourceNotFoundException("Room" + id + "not found.");
-//        }
+//            throw new ResourceNotFoundExc + "not found.");
+//        }eption("Room" + id
 
         return roomRepository.findById(id)
                 //lambda expressions

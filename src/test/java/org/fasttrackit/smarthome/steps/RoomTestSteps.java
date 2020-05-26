@@ -22,7 +22,7 @@ public class RoomTestSteps {
     public Room  createRoom() {
 
         SaveRoomRequest request = new SaveRoomRequest();
-        request.setName("Dormnitor");
+        request.setName("Dormitor");
 
         Room room = roomService.createRoom(request);
 
