@@ -2,12 +2,9 @@ package org.fasttrackit.smarthome.service;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.fasttrackit.smarthome.domain.Room;
 import org.fasttrackit.smarthome.domain.Temperature;
 import org.fasttrackit.smarthome.exception.ResourceNotFoundException;
 import org.fasttrackit.smarthome.persistance.TemperatureRepository;
-import org.fasttrackit.smarthome.transfer.room.GetRoomsRequest;
-import org.fasttrackit.smarthome.transfer.temperature.AddTemperatureToRoomRequest;
 import org.fasttrackit.smarthome.transfer.temperature.SaveTemperatureRequest;
 import org.fasttrackit.smarthome.transfer.temperature.TemperatureResponse;
 import org.slf4j.Logger;
@@ -17,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
 
 @Service
 public class TemperatureService {
@@ -54,7 +49,7 @@ public class TemperatureService {
                 .orElseThrow(() -> new ResourceNotFoundException("Room" + id + " not found"));
     }
 
-    public Page<Temperature> getAllTemperatures(TemperatureResponse request, Pageable pageable) {
+    public Page<Temperature> getAllTemperatures(SaveTemperatureRequest request, Pageable pageable) {
         LOGGER.info("Searching temperatures : {} ", request);
 
         if (request != null) {
@@ -75,6 +70,12 @@ public class TemperatureService {
         BeanUtils.copyProperties(request, temperature);
 
         return temperatureRepository.save(temperature);
+    }
+
+    public void deleteTemperature(long id) {
+        LOGGER.info("Deleting temperature {}:", id);
+
+        temperatureRepository.deleteById(id);
     }
 
 

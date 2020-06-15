@@ -6,9 +6,19 @@ import javax.validation.constraints.NotNull;
 public class SaveTemperatureRequest {
 
     @NotNull
+    private String roomName;
+    @NotNull
     private double optimalValue;
     @NotNull
     private double targetValue;
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
 
     public double getOptimalValue() {
         return optimalValue;
@@ -29,7 +39,8 @@ public class SaveTemperatureRequest {
     @Override
     public String toString() {
         return "SaveTemperatureRequest{" +
-                "optimalValue=" + optimalValue +
+                "roomName='" + roomName + '\'' +
+                ", optimalValue=" + optimalValue +
                 ", targetValue=" + targetValue +
                 '}';
     }

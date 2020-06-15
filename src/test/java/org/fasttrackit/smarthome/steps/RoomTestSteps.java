@@ -23,12 +23,14 @@ public class RoomTestSteps {
 
         SaveRoomRequest request = new SaveRoomRequest();
         request.setName("Dormitor");
+        request.setTargetValue(20);
 
         Room room = roomService.createRoom(request);
 
         assertThat(room, notNullValue());
         assertThat(room.getId(), greaterThan(0L));
         assertThat(room.getName(), is(request.getName()));
+        assertThat(room.getTargetValue(), is(request.getTargetValue()));
         return room;
     }
 }

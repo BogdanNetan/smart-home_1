@@ -14,6 +14,9 @@ public class Room {
     @GeneratedValue
     private long id;
 
+    @NotNull
+    private double targetValue;
+
 
 
 
@@ -36,11 +39,19 @@ public class Room {
         this.name = name;
     }
 
+    public double getTargetValue() {
+        return targetValue;
+    }
 
-      @Override
+    public void setTargetValue(double targetValue) {
+        this.targetValue = targetValue;
+    }
+
+    @Override
     public String toString() {
         return "Room{" +
                 "id=" + id +
+                ", targetValue=" + targetValue +
                 ", name='" + name + '\'' +
                 '}';
     }

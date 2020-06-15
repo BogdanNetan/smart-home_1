@@ -8,7 +8,16 @@ public class SaveRoomRequest {
 
     @NotNull
     private String name;
+    @NotNull
+    private double targetValue;
 
+    public double getTargetValue() {
+        return targetValue;
+    }
+
+    public void setTargetValue(double targetValue) {
+        this.targetValue = targetValue;
+    }
 
     public String getName() {
         return name;
@@ -22,6 +31,7 @@ public class SaveRoomRequest {
     public String toString() {
         return "SaveRoomRequest{" +
                 "name='" + name + '\'' +
+                ", targetValue=" + targetValue +
                 '}';
     }
 }

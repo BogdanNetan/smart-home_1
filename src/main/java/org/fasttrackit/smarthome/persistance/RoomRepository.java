@@ -14,5 +14,5 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
 
     @Query("SELECT  room FROM Room  room where name LIKE '%:partialName%'")
-    Page<Room> findByPartilName(String partialName, Pageable pageable);
+    Page<Room> findByPartialName(String partialName, Pageable pageable);
 }
